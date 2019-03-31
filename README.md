@@ -84,7 +84,7 @@ Field values in the configuration can be either
 * a primitive value that will be used for all generated rows or
 * a callback that returns a primitive value. The callback arguments can be found in the listing below.
 
-### GTFS Values
+### GTFS values
 
 | Name | Callback args | Default |
 |------|---------------|---------|
@@ -107,10 +107,6 @@ Field values in the configuration can be either
 | frequencyEndTime | feature, featureIndex | `"24:00:00"` |
 | frequencyHeadwaySecs | feature, featureIndex | `600` |
 
-Calendar service windows are defined ahead of time:
-
-
-
 ### Special values
 
 | Name | Callback args | Default | Explanation |
@@ -119,10 +115,9 @@ Calendar service windows are defined ahead of time:
 | skipStopsWithinDistance | - | `0` | Skip stops that are too close to the previous stop in kilometers. A skipped stop is not considered a previous stop. Only accepts number value.
 | stopDuration | - | `0` | Time spent at a stop when generating stop times. Only accepts number value.
 
-
 ### Service dates
 
-Service windows are defined ahead of time
+Service windows are defined ahead of time. Default:
 
 ```js
 serviceWindows: [{
@@ -173,7 +168,6 @@ geojsonToGtfs.routeType.BUS
 ```
 
 You can find all available constants in the `src/constants.js` file.
-
 
 ## Todo
 
