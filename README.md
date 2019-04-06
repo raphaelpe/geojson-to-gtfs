@@ -4,7 +4,7 @@ A library for Node.js to generate public transit feeds in the [GTFS format](http
 
 [![NPM version](https://img.shields.io/npm/v/geojson-to-gtfs.svg?style=flat)](https://www.npmjs.com/package/geojson-to-gtfs)
 [![GitHub release](https://img.shields.io/github/release/trufi-app/geojson-to-gtfs.svg)](https://github.com/trufi-app/geojson-to-gtfs/releases/)
-[![Package dependencies](https://img.shields.io/librariesio/github/trufi-app/geojson-to-gtfs.svg)](https://github.com/trufi-app/geojson-to-gtfs/package.json)
+[![Package dependencies](https://img.shields.io/david/trufi-app/geojson-to-gtfs.svg)](https://david-dm.org/trufi-app/geojson-to-gtfs)
 [![GitHub license](https://img.shields.io/github/license/trufi-app/geojson-to-gtfs.svg)](https://github.com/trufi-app/geojson-to-gtfs/blob/master/LICENSE)
 
 ## Installation
