@@ -3,15 +3,15 @@ const readGeojson = require('./src/readGeojson');
 const writeGtfs = require('./src/writeGtfs');
 const constants = require('./src/constants');
 
-function geojsonToGtfs(geojson, outputDir = null, userConfig = {}) {
+function geojsonToGtfs(geojson, outputPath = null, userConfig = {}) {
   const input = typeof geojson === "string"
     ? readGeojson(geojson)
     : geojson;
 
   // Handle userConfig passed in as second argument
-  if (typeof outputDir === "object") {
-    outputDir = null;
-    userConfig = outputDir;
+  if (typeof outputPath === "object") {
+    outputPath = null;
+    userConfig = outputPath;
   }
 
   if (userConfig.prepareInput) {
@@ -24,8 +24,8 @@ function geojsonToGtfs(geojson, outputDir = null, userConfig = {}) {
     userConfig.prepareOutput(data);
   }
 
-  if (outputDir) {
-    writeGtfs(data, outputDir);
+  if (outputPath) {
+    writeGtfs(data, outputPath, userConfig.zipCompressionLevel, userConfig.zipComment);
   }
 
   return data;

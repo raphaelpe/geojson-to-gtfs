@@ -8,8 +8,19 @@
   },
   "author": "Malte Dölker",
   "license": "MIT",
+  "engines": {
+    "node": ">=8.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/trufi-app/geojson-to-gtfs.git"
+  },
+  "bugs": {
+    "url": "https://github.com/trufi-app/geojson-to-gtfs/issues"
+  },
   "dependencies": {
     "debug": "^4.1.1",
+    "jszip": "^3.2.1",
     "lodash.uniqby": "^4.7.0",
     "turf-distance": "^3.0.12"
   }

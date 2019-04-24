@@ -7,6 +7,10 @@ A library for Node.js to generate public transit feeds in the [GTFS format](http
 [![Package dependencies](https://img.shields.io/david/trufi-app/geojson-to-gtfs.svg)](https://david-dm.org/trufi-app/geojson-to-gtfs)
 [![GitHub license](https://img.shields.io/github/license/trufi-app/geojson-to-gtfs.svg)](https://github.com/trufi-app/geojson-to-gtfs/blob/master/LICENSE)
 
+## Motivation
+This project is part of a set of tools to provide travel data in countries where public transport works on demand and neither bus stops nor timetables exist. Check out https://github.com/trufi-app
+to see more of our work.
+
 ## Installation
 
 ```bash
@@ -20,20 +24,20 @@ Minimal example (using defaults):
 ```js
 const geojsonToGtfs = require('geojson-to-gtfs');
 
-// Reads routes.geojson file, writes into output dir
-geojsonToGtfs('./routes.geojson', './output');
+// Reads GeoJSON file, writes GTFS file
+geojsonToGtfs('./routes.geojson', './gtfs.zip');
 ```
 
 Customize transformation:
 
 ```js
-geojsonToGtfs('./routes.geojson', './output', {
+geojsonToGtfs('./routes.geojson', './gtfs.zip', {
   agencyUrl: "https://www.example.org", // Static value
   routeShortName: (feature) => feature.properties.line, // Callback
 });
 ```
 
-Usage without file system:
+Usage without files:
 
 ```js
 const geojson = {
@@ -51,7 +55,7 @@ const userConfig = {
   // ...
 };
 
-// Pass in geojson object, omit output directory
+// Pass in GeoJSON as object. Output path is omitted and GTFS data is returned.
 const gtfs = geojsonToGtfs(geojson, userConfig);
 
 /*
@@ -114,6 +118,8 @@ Field values in the configuration can be either
 | vehicleSpeed | feature, featureIndex | `50` | Used to generate stop times |
 | skipStopsWithinDistance | - | `0` | Skip stops that are too close to the previous stop in kilometers. A skipped stop is not considered a previous stop. Only accepts number value.
 | stopDuration | - | `0` | Time spent at a stop when generating stop times. Only accepts number value.
+| zipCompressionLevel | - | `1` | The deflate compression level for the output ZIP. Accepts values 1 (best speed) to 9 (best compression). Use 0 to disable compression.
+| zipComment | - | - | Comment text for the output ZIP.
 
 ### Service dates
 
