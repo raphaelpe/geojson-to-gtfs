@@ -1,6 +1,6 @@
 const debug = require('debug')('geojson-to-gtfs');
 const uniqBy = require('lodash.uniqby');
-const distanceBetween = require('turf-distance');
+const distanceBetween = require('@turf/distance').default;
 const secondsToTime = require('./secondsToTime');
 const createConfig = require('./config');
 
@@ -47,7 +47,7 @@ module.exports = function transform(input, userConfig) {
       let distance = 0;
 
       if (previousCoords) {
-        distance = distanceBetween(previousCoords, coords, 'kilometers');
+        distance = distanceBetween(previousCoords, coords, { units: 'kilometers' });
 
         if (distance <= config.skipStopsWithinDistance) {
           debug('Skipped stop %d (distance to previous stop is less or equal %d)', coordsIndex, config.skipStopsWithinDistance);
