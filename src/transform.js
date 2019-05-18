@@ -39,10 +39,12 @@ module.exports = function transform(input, userConfig) {
   features.forEach((feature, featureIndex) => {
     debug('Processing GeoJSON feature %d', featureIndex);
 
+    const routeStops = [];
     const vehicleSpeed = mapVehicleSpeed(feature, featureIndex);
     const speed = vehicleSpeed / 60 / 60 * 1000;
     let previousCoords = null;
 
+    // Generate a stop for each GeoJSON point
     feature.geometry.coordinates.forEach((coords, coordsIndex) => {
       let distance = 0;
 
@@ -58,9 +60,11 @@ module.exports = function transform(input, userConfig) {
       const stop = mapStop(coords, coordsIndex, feature, featureIndex);
       stop._distance = distance;
       stops.push(stop);
+      routeStops.push(stop);
       previousCoords = coords;
     });
 
+    // Generate a trip per service window
     serviceWindows.forEach(serviceWindow => {
       const trip = mapTrip(serviceWindow, feature, featureIndex);
       trips.push(trip);
@@ -71,7 +75,7 @@ module.exports = function transform(input, userConfig) {
 
       let seconds = 0;
 
-      stops.forEach((stop, stopSequence) => {
+      routeStops.forEach((stop, stopSequence) => {
         seconds += Math.ceil((stop._distance * 1000) / speed);
 
         const arrivalTime = secondsToTime(seconds);
