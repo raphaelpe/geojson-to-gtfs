@@ -66,7 +66,8 @@ const gtfs = geojsonToGtfs(geojson, userConfig);
   routes: [ ... ],
   stop_times: [ ... ],
   stops: [ ... ],
-  trips: [ ... ]
+  trips: [ ... ],
+  shapes: [ ... ]
 }
 */
 ```
@@ -107,6 +108,11 @@ Field values in the configuration can be either
 | stopLat | coords, coordsIndex, feature, featureIndex | `coords[1]` |
 | stopLon | coords, coordsIndex, feature, featureIndex | `coords[0]` |
 | tripId | serviceWindow, feature, featureIndex | `` `${serviceWindow.serviceId}-${featureIndex + 1}` `` |
+| shapeId | feature, featureIndex | `featureIndex + 1` |
+| shapePtLat | coords | `coords[1]` |
+| shapePtLon | coords | `coords[0]` |
+| shapePtSequence | coords, coordsIndex | `coordsIndex + 1` |
+| shapeDistTraveled | coords, coordsIndex, feature, featureIndex, distance | `distance` (in kilometers) |
 | frequencyStartTime | feature, featureIndex | `"00:00:00"` |
 | frequencyEndTime | feature, featureIndex | `"24:00:00"` |
 | frequencyHeadwaySecs | feature, featureIndex | `600` |
@@ -151,6 +157,7 @@ These can be overridden to customize the GTFS output.
 | mapRoute | feature, featureIndex |
 | mapTrip | serviceWindow, feature, featureIndex |
 | mapStopTime | trip, stop, stopSequence, arrivalTime, departureTime |
+| mapShapePoint | coords, coordsIndex, feature, featureIndex, distance |
 | mapFrequency | trip, feature, featureIndex |
 | mapService | serviceWindow |
 | mapVehicleSpeed | feature, featureIndex |
@@ -177,7 +184,7 @@ You can find all available constants in the `src/constants.js` file.
 
 ## Todo
 
-* Implement missing GTFS files: calendar_dates.txt, fare_rules.txt, shapes.txt, transfers.txt, feed_info.txt
+* Implement missing GTFS files: calendar_dates.txt, fare_rules.txt, transfers.txt, feed_info.txt
 * Add missing GTFS fields for the existing files
 * Allow different stop times strategies
 * Allow multiple frequencies per trip
