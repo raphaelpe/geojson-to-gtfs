@@ -17,6 +17,11 @@ module.exports = function createConfig(userConfig) {
     stopLat: (coords) => coords[1],
     stopLon: (coords) => coords[0],
     tripId: (serviceWindow, feature, featureIndex) => `${serviceWindow.serviceId}-${featureIndex + 1}`,
+    shapeId: (feature, featureIndex) => featureIndex + 1,
+    shapePtLat: (coords) => coords[1],
+    shapePtLon: (coords) => coords[0],
+    shapePtSequence: (coords, coordsIndex) => coordsIndex + 1,
+    shapeDistTraveled: (coords, coordsIndex, feature, featureIndex, distance) => distance,
     frequencyStartTime: "00:00:00",
     frequencyEndTime: "24:00:00",
     frequencyHeadwaySecs: 600, // every 10 minutes
@@ -40,6 +45,7 @@ module.exports = function createConfig(userConfig) {
     mapRoute,
     mapTrip,
     mapStopTime,
+    mapShapePoint,
     mapFrequency,
     mapService,
     mapVehicleSpeed,
@@ -106,6 +112,16 @@ module.exports = function createConfig(userConfig) {
       stop_id: stop.stop_id,
       arrival_time: arrivalTime,
       departure_time: departureTime,
+    };
+  }
+
+  function mapShapePoint(coords, coordsIndex, feature, featureIndex, distance) {
+    return {
+      shape_id: getValueForKey("shapeId", feature, featureIndex),
+      shape_pt_lat: getValueForKey("shapePtLat", coords, coordsIndex, feature, featureIndex),
+      shape_pt_lon: getValueForKey("shapePtLon", coords, coordsIndex, feature, featureIndex),
+      shape_pt_sequence: getValueForKey("shapePtSequence", coords, coordsIndex, feature, featureIndex),
+      shape_dist_traveled: getValueForKey("shapeDistTraveled", coords, coordsIndex, feature, featureIndex, distance),
     };
   }
 

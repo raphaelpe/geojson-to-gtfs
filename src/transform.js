@@ -11,6 +11,7 @@ module.exports = function transform(input, userConfig) {
     serviceWindows,
     mapAgency, // feature, featureIndex
     mapStop, // coords, coordsIndex, feature, featureIndex
+    mapShapePoint, // coords, coordsIndex, feature, featureIndex, distance
     mapRoute, // feature, featureIndex
     mapTrip, // serviceWindow, feature, featureIndex
     mapStopTime, // trip, stop, stopSequence, time
@@ -35,6 +36,7 @@ module.exports = function transform(input, userConfig) {
   const frequencies = [];
   const stops = [];
   const stopTimes = [];
+  const shapePoints = [];
 
   features.forEach((feature, featureIndex) => {
     debug('Processing GeoJSON feature %d', featureIndex);
@@ -43,6 +45,7 @@ module.exports = function transform(input, userConfig) {
     const vehicleSpeed = mapVehicleSpeed(feature, featureIndex);
     const speed = vehicleSpeed / 60 / 60 * 1000;
     let previousCoords = null;
+    let totalDistance = 0;
 
     // Generate a stop for each GeoJSON point
     feature.geometry.coordinates.forEach((coords, coordsIndex) => {
@@ -50,6 +53,7 @@ module.exports = function transform(input, userConfig) {
 
       if (previousCoords) {
         distance = distanceBetween(previousCoords, coords, { units: 'kilometers' });
+        totalDistance += distance;
 
         if (distance <= config.skipStopsWithinDistance) {
           debug('Skipped stop %d (distance to previous stop is less or equal %d)', coordsIndex, config.skipStopsWithinDistance);
@@ -58,9 +62,11 @@ module.exports = function transform(input, userConfig) {
       }
 
       const stop = mapStop(coords, coordsIndex, feature, featureIndex);
+      const shapePoint = mapShapePoint(coords, coordsIndex, feature, featureIndex, totalDistance);
       stop._distance = distance;
       stops.push(stop);
       routeStops.push(stop);
+      shapePoints.push(shapePoint);
       previousCoords = coords;
     });
 
@@ -94,5 +100,6 @@ module.exports = function transform(input, userConfig) {
     frequencies,
     stops: uniqBy(stops, 'stop_id'),
     'stop_times': stopTimes,
+    shapes: shapePoints,
   };
 };
